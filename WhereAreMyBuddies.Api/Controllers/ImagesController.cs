@@ -10,10 +10,37 @@ namespace WhereAreMyBuddies.Api.Controllers
 {
     public class ImagesController : BaseApiController
     {
+        // api/images/set?sessionKey={sessionKey}
+        [HttpPost]
+        [ActionName("set")]
+        public HttpResponseMessage PostSetNewImage(
+            [FromBody]ImageModel imageModel, [FromUri]string sessionKey)
+        {
+            var responseMsg = this.PerformOperationAndHandleExeptions(() =>
+            {
+                using (var context = new WhereAreMyBuddiesContext())
+                {
+                    if (imageModel == null)
+                    {
+                        return this.Request.CreateResponse(HttpStatusCode.NotFound);
+                    }
+
+                    var user = Validator.ValidateSessionKey(context, sessionKey);
+                    var image = Parser.ImageModelToImage(imageModel);
+                    user.Image = image;
+
+                    var response = this.Request.CreateResponse(HttpStatusCode.OK, imageModel);
+                    return response;
+                }
+            });
+
+            return responseMsg;
+        }
+
         // api/images/get?sessionKey={sessionKey}
         [HttpPost]
         [ActionName("get")]
-        public HttpResponseMessage PostResponseToFriendRequest(
+        public HttpResponseMessage PostGetFriendsImage(
             [FromBody]FriendModel friendModel, [FromUri]string sessionKey)
         {
             var responseMsg = this.PerformOperationAndHandleExeptions(() =>

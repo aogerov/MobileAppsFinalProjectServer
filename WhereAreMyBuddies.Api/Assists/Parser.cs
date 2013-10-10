@@ -101,5 +101,19 @@ namespace WhereAreMyBuddies.Api.Assists
                 LongitudeAtCapturing = image.Coordinates.Longitude
             };
         }
+
+        public static Image ImageModelToImage(ImageModel imageModel)
+        {
+            return new Image
+            {
+                Url = imageModel.Url,
+                DateTimeAtCapturing = imageModel.DateTimeAtCapturing,
+                Coordinates = new Coordinates
+                {
+                    Latitude = imageModel.LatitudeAtCapturing,
+                    Longitude = imageModel.LongitudeAtCapturing
+                }
+            };
+        }
     }
 }
