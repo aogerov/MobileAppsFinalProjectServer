@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -23,7 +24,12 @@ namespace WhereAreMyBuddies.Api.Controllers
 
                     var user = Parser.UserModelToUser(model);
                     context.Users.Add(user);
+                    
+                    var defaultCoordinates = Parser.CreateDefaultCoordinates(model);
+                    context.Coordinates.Add(defaultCoordinates);
+                    user.Coordinates = defaultCoordinates;
                     context.SaveChanges();
+                    
                     user.SessionKey = Generator.GenerateSessionKey(user.Id);
                     user.IsOnline = true;
                     context.SaveChanges();

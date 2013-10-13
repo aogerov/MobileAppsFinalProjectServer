@@ -27,6 +27,15 @@ namespace WhereAreMyBuddies.Api.Assists
             };
         }
 
+        public static Coordinates CreateDefaultCoordinates(UserModel model)
+        {
+            return new Coordinates
+            {
+                Latitude = "0",
+                Longitude = "0"
+            };
+        }
+
         public static Coordinates CoordinatesModelToCoordinates(CoordinatesModel coordinatesModel)
         {
             return new Coordinates
@@ -38,16 +47,21 @@ namespace WhereAreMyBuddies.Api.Assists
 
         public static IEnumerable<FriendModel> FriendsToFriendModels(IOrderedEnumerable<User> friendEntities)
         {
-            var friendModels =
-                (from friendEntity in friendEntities
-                 select new FriendModel
+            var friendModels = new List<FriendModel>();
+
+            foreach (var friendEntity in friendEntities)
+            {
+                var newFriendModel = new FriendModel
                  {
                      Id = friendEntity.Id,
                      Nickname = friendEntity.Nickname,
                      IsOnline = friendEntity.IsOnline,
                      Latitude = friendEntity.Coordinates.Latitude,
                      Longitude = friendEntity.Coordinates.Longitude
-                 });
+                 };
+
+                friendModels.Add(newFriendModel);
+            }
 
             return friendModels;
         }
