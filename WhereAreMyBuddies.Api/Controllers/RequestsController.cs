@@ -111,7 +111,7 @@ namespace WhereAreMyBuddies.Api.Controllers
                         request.IsShowed = true;
                     }
                     
-                    if (!requestResponse.IsAccepted && !requestResponse.IsLeftForLater)
+                    if (requestResponse.IsAccepted || !requestResponse.IsLeftForLater)
                     {
                         userWhoRespondsToRequest.FriendRequests.Remove(request);
                         context.FriendRequests.Remove(request);
