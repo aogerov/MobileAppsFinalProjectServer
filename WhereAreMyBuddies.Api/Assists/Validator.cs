@@ -8,7 +8,7 @@ namespace WhereAreMyBuddies.Api.Assists
 {
     public class Validator
     {
-        private const int MinUsernameAndNicknameLength = 6;
+        private const int MinUsernameAndNicknameLength = 3;
         private const int MaxUsernameAndNicknameLength = 30;
         private const int AuthcodeLength = 40;
         private const string ValidUsernameCharacters =
