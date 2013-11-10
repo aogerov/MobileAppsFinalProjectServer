@@ -94,7 +94,7 @@ namespace WhereAreMyBuddies.Api.Controllers
             return responseMsg;
         }
 
-        // api/users/logout?sessionKey={sessionKey}
+        // api/users/validate?sessionKey={sessionKey}
         [HttpGet]
         [ActionName("validate")]
         public HttpResponseMessage GetValidateUser([FromUri]string sessionKey)
@@ -103,8 +103,8 @@ namespace WhereAreMyBuddies.Api.Controllers
             {
                 using (var context = new WhereAreMyBuddiesContext())
                 {
-                    Validator.ValidateSessionKey(context, sessionKey);
-                    var response = this.Request.CreateResponse(HttpStatusCode.OK);
+                    var user = Validator.ValidateSessionKey(context, sessionKey);
+                    var response = this.Request.CreateResponse(HttpStatusCode.OK, user);
                     return response;
                 }
             });
