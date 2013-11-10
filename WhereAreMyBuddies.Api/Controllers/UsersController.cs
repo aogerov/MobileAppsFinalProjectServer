@@ -30,8 +30,8 @@ namespace WhereAreMyBuddies.Api.Controllers
                     user.IsOnline = true;
                     context.SaveChanges();
 
-                    var userLoggedModel = Parser.UserToUserLoggedModel(user);
-                    var response = this.Request.CreateResponse(HttpStatusCode.Created, userLoggedModel);
+                    var userModel = Parser.UserToUserLoggedModel(user);
+                    var response = this.Request.CreateResponse(HttpStatusCode.Created, userModel);
                     return response;
                 }
             });
@@ -62,8 +62,8 @@ namespace WhereAreMyBuddies.Api.Controllers
                     user.IsOnline = true;
                     context.SaveChanges();
 
-                    var loggedModel = Parser.UserToUserLoggedModel(user);
-                    var response = this.Request.CreateResponse(HttpStatusCode.Created, loggedModel);
+                    var userModel = Parser.UserToUserLoggedModel(user);
+                    var response = this.Request.CreateResponse(HttpStatusCode.Created, userModel);
                     return response;
                 }
             });
@@ -104,7 +104,9 @@ namespace WhereAreMyBuddies.Api.Controllers
                 using (var context = new WhereAreMyBuddiesContext())
                 {
                     var user = Validator.ValidateSessionKey(context, sessionKey);
-                    var response = this.Request.CreateResponse(HttpStatusCode.OK, user);
+                    var userModel = Parser.UserToUserLoggedModel(user);
+
+                    var response = this.Request.CreateResponse(HttpStatusCode.OK, userModel);
                     return response;
                 }
             });
