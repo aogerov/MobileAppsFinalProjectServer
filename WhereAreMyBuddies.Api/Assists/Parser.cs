@@ -45,25 +45,18 @@ namespace WhereAreMyBuddies.Api.Assists
             };
         }
 
-        public static IEnumerable<FriendModel> FriendsToFriendModels(IOrderedEnumerable<User> friendEntities)
+        public static FriendModel FriendToFriendModel(User user)
         {
-            var friendModels = new List<FriendModel>();
-
-            foreach (var friendEntity in friendEntities)
-            {
-                var newFriendModel = new FriendModel
+            var friendModel = new FriendModel
                  {
-                     Id = friendEntity.Id,
-                     Nickname = friendEntity.Nickname,
-                     IsOnline = friendEntity.IsOnline,
-                     Latitude = friendEntity.Coordinates.Latitude,
-                     Longitude = friendEntity.Coordinates.Longitude
+                     Id = user.Id,
+                     Nickname = user.Nickname,
+                     IsOnline = user.IsOnline,
+                     Latitude = user.Coordinates.Latitude,
+                     Longitude = user.Coordinates.Longitude
                  };
 
-                friendModels.Add(newFriendModel);
-            }
-
-            return friendModels;
+                return friendModel;
         }
 
         public static FriendModel UserToFriendFoundModel(User friendFound)
@@ -110,7 +103,7 @@ namespace WhereAreMyBuddies.Api.Assists
             return new ImageModel
             {
                 Url = image.Url,
-                DateTimeAtCapturing = image.DateTimeAtCapturing,
+                Timestamp = image.Timestamp,
                 LatitudeAtCapturing = image.Coordinates.Latitude,
                 LongitudeAtCapturing = image.Coordinates.Longitude
             };
@@ -121,7 +114,7 @@ namespace WhereAreMyBuddies.Api.Assists
             return new Image
             {
                 Url = imageModel.Url,
-                DateTimeAtCapturing = imageModel.DateTimeAtCapturing,
+                Timestamp = imageModel.Timestamp,
                 Coordinates = new Coordinates
                 {
                     Latitude = imageModel.LatitudeAtCapturing,

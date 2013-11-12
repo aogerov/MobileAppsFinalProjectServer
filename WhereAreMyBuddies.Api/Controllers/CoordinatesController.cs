@@ -26,10 +26,12 @@ namespace WhereAreMyBuddies.Api.Controllers
                     {
                         user.Coordinates.Latitude = model.Latitude;
                         user.Coordinates.Longitude = model.Longitude;
+                        user.Coordinates.Timestamp = DateTime.Now;
                     }
                     else
                     {
                         var newCoordinates = Parser.CoordinatesModelToCoordinates(model);
+                        newCoordinates.Timestamp = DateTime.Now;
                         context.Coordinates.Add(newCoordinates);
                         user.Coordinates = newCoordinates;
                     }

@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using WhereAreMyBuddies.Api.Assists;
 using WhereAreMyBuddies.Api.Models;
 using WhereAreMyBuddies.Data;
+using WhereAreMyBuddies.Model;
 
 namespace WhereAreMyBuddies.Api.Controllers
 {
@@ -27,7 +29,7 @@ namespace WhereAreMyBuddies.Api.Controllers
 
                     var user = Validator.ValidateSessionKey(context, sessionKey);
                     var image = Parser.ImageModelToImage(imageModel);
-                    user.Image = image;
+                    user.Images.Add(image);
 
                     var response = this.Request.CreateResponse(HttpStatusCode.OK, imageModel);
                     return response;
@@ -41,7 +43,7 @@ namespace WhereAreMyBuddies.Api.Controllers
         [HttpPost]
         [ActionName("get")]
         public HttpResponseMessage PostGetFriendsImage(
-            [FromBody]FriendModel friendModel, [FromUri]string sessionKey)
+            [FromBody]FriendModel friendModel, [FromUri]int imagesCount, [FromUri]string sessionKey)
         {
             var responseMsg = this.PerformOperationAndHandleExeptions(() =>
             {
@@ -55,8 +57,23 @@ namespace WhereAreMyBuddies.Api.Controllers
                         return this.Request.CreateResponse(HttpStatusCode.NotFound);
                     }
 
-                    var imageModel = Parser.ImageToImageModel(friend.Image);
-                    var response = this.Request.CreateResponse(HttpStatusCode.OK, imageModel);
+                    var imageModels = new List<ImageModel>();
+                    if (friend.Images.Count > 0 && imagesCount > 0)
+                    {
+                        var images = new List<Image>(friend.Images);
+                        for (int i = friend.Images.Count - 1; i >= 0; i--)
+                        {
+                            var imageModel = Parser.ImageToImageModel(images[i]);
+                            imageModels.Add(imageModel);
+                            imagesCount--;
+                            if (imagesCount == 0)
+                            {
+                                break;
+                            }
+                        }
+                    }
+
+                    var response = this.Request.CreateResponse(HttpStatusCode.OK, imageModels);
                     return response;
                 }
             });

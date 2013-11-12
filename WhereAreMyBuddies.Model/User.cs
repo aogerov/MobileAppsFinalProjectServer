@@ -32,7 +32,7 @@ namespace WhereAreMyBuddies.Model
 
         public virtual Coordinates Coordinates { get; set; }
 
-        public virtual Image Image { get; set; }
+        public virtual ICollection<Image> Images { get; set; }
 
         public virtual ICollection<User> Friends { get; set; }
 

@@ -9,8 +9,8 @@ namespace WhereAreMyBuddies.Api.Models
         [DataMember(Name = "url")]
         public string Url { get; set; }
 
-        [DataMember(Name = "dateTimeAtCapturing")]
-        public DateTime DateTimeAtCapturing { get; set; }
+        [DataMember(Name = "timestamp")]
+        public DateTime Timestamp { get; set; }
 
         [DataMember(Name = "latitudeAtCapturing")]
         public string LatitudeAtCapturing { get; set; }

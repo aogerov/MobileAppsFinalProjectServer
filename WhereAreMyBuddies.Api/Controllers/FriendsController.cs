@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -6,6 +7,7 @@ using System.Web.Http;
 using WhereAreMyBuddies.Api.Assists;
 using WhereAreMyBuddies.Api.Models;
 using WhereAreMyBuddies.Data;
+using WhereAreMyBuddies.Model;
 
 namespace WhereAreMyBuddies.Api.Controllers
 {
@@ -22,9 +24,30 @@ namespace WhereAreMyBuddies.Api.Controllers
                 {
                     var user = Validator.ValidateSessionKey(context, sessionKey);
 
-                    var friends = user.Friends.OrderBy(u => u.IsOnline).ThenBy(u => u.Nickname);
-                    var friendModels = Parser.FriendsToFriendModels(friends);
+                    var friends = user.Friends.OrderBy(u => u.Coordinates.Timestamp);
+                    var onlineFriends = new List<FriendModel>();
+                    var offlineFriends = new List<FriendModel>();
+                    foreach (var friend in friends)
+                    {
+                        if (friend.Coordinates.Timestamp.AddHours(-1) > DateTime.Now)
+                        {
+                            friend.IsOnline = false;
+                        }
 
+                        var friendModel = Parser.FriendToFriendModel(friend);
+                        if (friend.IsOnline)
+                        {
+                            onlineFriends.Add(friendModel);
+                        }
+                        else
+                        {
+                            offlineFriends.Add(friendModel);
+                        }
+                    }
+
+                    var friendModels = new List<List<FriendModel>>();
+                    friendModels.Add(onlineFriends);
+                    friendModels.Add(offlineFriends);
                     var response = this.Request.CreateResponse(HttpStatusCode.OK, friendModels);
                     return response;
                 }

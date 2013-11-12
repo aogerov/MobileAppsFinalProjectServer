@@ -11,8 +11,11 @@ namespace WhereAreMyBuddies.Model
         [Required]
         public string Url { get; set; }
 
-        public DateTime DateTimeAtCapturing { get; set; }
+        [Required]
+        public DateTime Timestamp { get; set; }
 
         public virtual Coordinates Coordinates { get; set; }
+
+        public virtual User User { get; set; }
     }
 }

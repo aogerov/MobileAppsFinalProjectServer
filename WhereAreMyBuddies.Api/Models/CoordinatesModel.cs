@@ -11,5 +11,8 @@ namespace WhereAreMyBuddies.Api.Models
 
         [DataMember(Name = "longitude")]
         public string Longitude { get; set; }
+
+        [DataMember(Name = "timeStamp")]
+        public string Timestamp { get; set; }
     }
 }
