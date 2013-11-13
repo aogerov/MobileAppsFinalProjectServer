@@ -7,7 +7,6 @@ using System.Web.Http;
 using WhereAreMyBuddies.Api.Assists;
 using WhereAreMyBuddies.Api.Models;
 using WhereAreMyBuddies.Data;
-using WhereAreMyBuddies.Model;
 
 namespace WhereAreMyBuddies.Api.Controllers
 {
