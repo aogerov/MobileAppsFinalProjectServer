@@ -50,14 +50,6 @@ namespace WhereAreMyBuddies.Api.Assists
             {
                 throw new ArgumentNullException("Coordinates can't be null");
             }
-            else if (string.IsNullOrEmpty(coordinates.Latitude))
-            {
-                throw new ArgumentNullException("Latitude can't be null or empty");
-            }
-            else if (string.IsNullOrEmpty(coordinates.Longitude))
-            {
-                throw new ArgumentNullException("Longitude can't be null or empty");
-            }
         }
 
         public static User ValidateFriendInDb(WhereAreMyBuddiesContext context, int id, string nickname)
