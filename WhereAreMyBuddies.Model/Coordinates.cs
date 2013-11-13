@@ -14,7 +14,6 @@ namespace WhereAreMyBuddies.Model
         [Required]
         public double Longitude { get; set; }
 
-        [Required]
         public DateTime Timestamp { get; set; }
     }
 }
