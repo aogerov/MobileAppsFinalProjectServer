@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Device.Location;
 using System.Linq;
 using System.Text;
 using WhereAreMyBuddies.Api.Models;
@@ -12,8 +13,6 @@ namespace WhereAreMyBuddies.Api.Assists
         private const string Nickname = "NICKNAME";
         private const string Distance = "DISTANCE";
         private const string CoordinatesTimestamp = "COORDINATES_TIMESTAMP";
-        private const string MeasureUnitsKilometers = "KILOMETERS";
-        private const string MeasureUnitsMiles = "MILES";
 
         public static User UserModelToUser(UserModel userModel)
         {
@@ -52,7 +51,7 @@ namespace WhereAreMyBuddies.Api.Assists
             };
         }
 
-        public static List<FriendModel> FriendsToFriendModels(User user, ICollection<User> friends, string orderBy, string measureUnits)
+        public static List<FriendModel> FriendsToFriendModels(User user, ICollection<User> friends, string orderBy)
         {
             var onlineFriends = new List<FriendModel>();
             var offlineFriends = new List<FriendModel>();
@@ -74,18 +73,12 @@ namespace WhereAreMyBuddies.Api.Assists
                 }
             }
 
-            MeasureUnitsEnum units = MeasureUnitsEnum.Kilometers;
-            if (measureUnits.ToLower() == MeasureUnitsMiles.ToLower())
-            {
-                units = MeasureUnitsEnum.Miles;
-            }
+            CalculateDistance(user, onlineFriends);
+            CalculateDistance(user, offlineFriends);
 
-            CalculateDistance(user, onlineFriends, units);
-            CalculateDistance(user, offlineFriends, units);
-            
             CalculateTimestampDifferences(onlineFriends);
             CalculateTimestampDifferences(offlineFriends);
-            
+
             SortFriendLists(onlineFriends, orderBy);
             SortFriendLists(offlineFriends, orderBy);
 
@@ -180,6 +173,12 @@ namespace WhereAreMyBuddies.Api.Assists
             foreach (var friend in friends)
             {
                 var timeDifference = timeNow.Subtract(friend.CoordinatesTimestamp);
+                if (timeDifference.Days > 0)
+                {
+                    friend.CoordinatesTimestampDifference = "more than 24 hours";
+                    continue;
+                }
+
                 StringBuilder difference = new StringBuilder();
                 difference.Append(timeDifference.Hours + ":");
                 if (timeDifference.Minutes < 10)
@@ -198,39 +197,19 @@ namespace WhereAreMyBuddies.Api.Assists
             }
         }
 
-        private static void CalculateDistance(User user, List<FriendModel> onlineFriends, MeasureUnitsEnum units)
+        private static void CalculateDistance(User user, List<FriendModel> friends)
         {
-            foreach (var friend in onlineFriends)
+            if (user.Coordinates == null)
             {
-                double latitudeA = user.Coordinates.Latitude;
-                double longitudeA = user.Coordinates.Latitude;
-                double latitudeB = friend.Latitude;
-                double longitudeB = friend.Longitude;
-                if (latitudeA <= -90 || latitudeA >= 90 || longitudeA <= -180 || longitudeA >= 180
-                    || latitudeB <= -90 && latitudeB >= 90 || longitudeB <= -180 || longitudeB >= 180)
-                {
-                    throw new ArgumentException(String.Format("Invalid value point coordinates. Points A({0},{1}) B({2},{3}) ",
-                                                              latitudeA, longitudeA, latitudeB, longitudeB));
-                }
-
-
-                double radians = (units == MeasureUnitsEnum.Kilometers) ? 6371 : 3960;
-                double radianLatitude = ToRadian(latitudeB - latitudeA);
-                double radianLongitude = ToRadian(longitudeB - longitudeA);
-
-                double pointA = Math.Sin(radianLatitude / 2) * Math.Sin(radianLatitude / 2) +
-                    Math.Cos(ToRadian(latitudeA)) * Math.Cos(ToRadian(latitudeB)) *
-                    Math.Sin(radianLongitude / 2) * Math.Sin(radianLongitude / 2);
-
-                double pointC = 2 * Math.Asin(Math.Min(1, Math.Sqrt(pointA)));
-                double pointD = radians * pointC;
-                friend.Distance = pointD;
+                return;
             }
-        }
 
-        private static double ToRadian(double val)
-        {
-            return (Math.PI / 180) * val;
+            var userGeoCoordinate = new GeoCoordinate(user.Coordinates.Latitude, user.Coordinates.Longitude);
+            foreach (var friend in friends)
+            {
+                var friendGeoCoordinate = new GeoCoordinate(friend.Latitude, friend.Longitude);
+                friend.Distance = userGeoCoordinate.GetDistanceTo(friendGeoCoordinate);
+            }
         }
 
         private static void SortFriendLists(List<FriendModel> friends, string orderBy)
