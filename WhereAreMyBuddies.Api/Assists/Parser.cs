@@ -53,7 +53,8 @@ namespace WhereAreMyBuddies.Api.Assists
                      Nickname = user.Nickname,
                      IsOnline = user.IsOnline,
                      Latitude = user.Coordinates.Latitude,
-                     Longitude = user.Coordinates.Longitude
+                     Longitude = user.Coordinates.Longitude,
+                     CoordinatesTimestamp = user.Coordinates.Timestamp
                  };
 
                 return friendModel;
