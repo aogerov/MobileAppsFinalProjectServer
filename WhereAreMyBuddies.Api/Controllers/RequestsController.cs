@@ -64,8 +64,9 @@ namespace WhereAreMyBuddies.Api.Controllers
             {
                 using (var context = new WhereAreMyBuddiesContext())
                 {
-                    var friendFound = Validator.ValidateFriendInDb(context, model.Id, model.Nickname);
                     var userWhoMakesRequest = Validator.ValidateSessionKey(context, sessionKey);
+                    var friendFound = Validator.ValidateFriendInDb(context, model.Id, model.Nickname);
+                    Validator.ValidateIdConflicts(userWhoMakesRequest, friendFound);
                     var friendRequest = Parser.CreateFriendRequest(userWhoMakesRequest);
 
                     if (friendFound.FriendRequests.FirstOrDefault(
@@ -93,10 +94,11 @@ namespace WhereAreMyBuddies.Api.Controllers
             {
                 using (var context = new WhereAreMyBuddiesContext())
                 {
-                    var userWhoRespondsToRequest = Validator.ValidateSessionKey(context, sessionKey);                    
+                    var userWhoRespondsToRequest = Validator.ValidateSessionKey(context, sessionKey);
                     var friendWhoMadeRequest = Validator.ValidateFriendInDb(
                         context, requestResponse.FromUserId, requestResponse.FromUserNickname);
-                    
+
+                    Validator.ValidateIdConflicts(userWhoRespondsToRequest, friendWhoMadeRequest);
                     var request = Validator.ValidateRequestExistence(
                         context, userWhoRespondsToRequest, friendWhoMadeRequest);
 
@@ -105,12 +107,12 @@ namespace WhereAreMyBuddies.Api.Controllers
                         userWhoRespondsToRequest.Friends.Add(friendWhoMadeRequest);
                         friendWhoMadeRequest.Friends.Add(userWhoRespondsToRequest);
                     }
-                    
+
                     if (requestResponse.IsLeftForLater)
                     {
                         request.IsShowed = true;
                     }
-                    
+
                     if (requestResponse.IsAccepted || !requestResponse.IsLeftForLater)
                     {
                         userWhoRespondsToRequest.FriendRequests.Remove(request);
