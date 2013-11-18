@@ -69,7 +69,7 @@ namespace WhereAreMyBuddies.Api.Controllers
                     if (friend.Images.Count > 0 && imagesCount > 0)
                     {
                         var images = new List<Image>(friend.Images);
-                        for (int i = friend.Images.Count - 1; i >= 0 || imagesCount > 0; i--, imagesCount--)
+                        for (int i = friend.Images.Count - 1; i >= 0 && imagesCount > 0; i--, imagesCount--)
                         {
                             var imageModel = Parser.ImageToImageModel(images[i]);
                             imageModels.Add(imageModel);
