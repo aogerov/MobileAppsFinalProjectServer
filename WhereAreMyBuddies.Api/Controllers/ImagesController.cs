@@ -30,6 +30,7 @@ namespace WhereAreMyBuddies.Api.Controllers
                     var user = Validator.ValidateSessionKey(context, sessionKey);
                     var image = Parser.ImageModelToImage(imageModel);
                     user.Images.Add(image);
+                    context.SaveChanges();
 
                     var response = this.Request.CreateResponse(HttpStatusCode.OK, imageModel);
                     return response;
