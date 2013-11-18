@@ -181,12 +181,17 @@ namespace WhereAreMyBuddies.Api.Assists
                 ThumbUrl = imageModel.ThumbUrl,
                 ImageDateAsString = imageModel.ImageDateAsString,
                 TimestampDifferenceWithCoordinates = imageModel.TimestampDifferenceWithCoordinates,
-                CoordinatesAccuracy = imageModel.CoordinatesAccuracy,
-                Coordinates = new Coordinates
-                {
-                    Latitude = imageModel.Latitude,
-                    Longitude = imageModel.Longitude
-                }
+                CoordinatesAccuracy = imageModel.CoordinatesAccuracy
+            };
+        }
+
+        public static Coordinates ExtractCoordinatesFromImageModel(ImageModel imageModel)
+        {
+            return new Coordinates
+            {
+                Latitude = imageModel.Latitude,
+                Longitude = imageModel.Longitude,
+                Timestamp = DateTime.Now
             };
         }
 

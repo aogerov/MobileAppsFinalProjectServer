@@ -28,7 +28,14 @@ namespace WhereAreMyBuddies.Api.Controllers
                     }
 
                     var user = Validator.ValidateSessionKey(context, sessionKey);
+                    
+                    var coordinates = Parser.ExtractCoordinatesFromImageModel(imageModel);
+                    context.Coordinates.Add(coordinates);
+
                     var image = Parser.ImageModelToImage(imageModel);
+                    image.Coordinates = coordinates;                    
+                    context.Images.Add(image);
+
                     user.Images.Add(image);
                     context.SaveChanges();
 
