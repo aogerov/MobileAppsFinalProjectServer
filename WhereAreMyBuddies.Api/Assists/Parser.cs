@@ -74,7 +74,7 @@ namespace WhereAreMyBuddies.Api.Assists
 
                 var friendModel = Parser.FriendToFriendModel(friend);
                 // remove this after the public defence in Telerik!!! - start point
-                if (friend.Nickname == "telerik")
+                if (user.Nickname == "telerik")
                 {
                     var random = new Random();
                     int onlineRandom = random.Next(1, 10);
