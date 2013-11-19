@@ -77,10 +77,22 @@ namespace WhereAreMyBuddies.Api.Assists
 
                 var friendModel = Parser.FriendToFriendModel(friend);
                 // remove this after the public defence in Telerik!!! - start point
-                if (user.Nickname == "telerik")
+                if (user.Nickname == "telerik" && friend.Nickname != "gercho")
                 {
-                    int onlineRandom = random.Next(1, 10);
-                    if (onlineRandom > 3)
+                    double sofiaCenterLatitude = 42.697766;
+                    double latitudeRandom = (double)random.Next(-10000, 10000) / 100000;
+                    friendModel.Latitude = Math.Round(sofiaCenterLatitude + latitudeRandom, 6);
+
+                    double sofiaCenterLongitude = 23.321311;
+                    double longitudeRandom = (double)random.Next(-10000, 10000) / 100000;
+                    friendModel.Longitude = Math.Round(sofiaCenterLongitude + longitudeRandom, 6);
+
+                    var time = user.Coordinates.Timestamp;
+                    int timeRandom = random.Next(1, 120);
+                    time = time.AddMinutes(-timeRandom);
+                    friendModel.CoordinatesTimestamp = time;
+
+                    if (timeRandom > 60)
                     {
                         friendModel.IsOnline = true;
                     }
@@ -88,24 +100,6 @@ namespace WhereAreMyBuddies.Api.Assists
                     {
                         friendModel.IsOnline = false;
                     }
-
-                    if (friend.Nickname == "gercho")
-                    {
-                        continue;
-                    }
-
-                    double sofiaCenterLatitude = 42.697766;
-                    double latitudeRandom = (double)random.Next(-20000, 20000) / 100000;
-                    friendModel.Latitude = Math.Round(sofiaCenterLatitude + latitudeRandom, 6);
-
-                    double sofiaCenterLongitude = 23.321311;
-                    double longitudeRandom = (double)random.Next(-20000, 20000) / 100000;
-                    friendModel.Longitude = Math.Round(sofiaCenterLongitude + longitudeRandom, 6);
-
-                    var time = user.Coordinates.Timestamp;
-                    int timeRandom = random.Next(1, 120);
-                    time = time.AddMinutes(-timeRandom);
-                    friendModel.CoordinatesTimestamp = time;
                 }
                 // remove this after the public defence in Telerik!!! - end point
                 if (friendModel.IsOnline)
