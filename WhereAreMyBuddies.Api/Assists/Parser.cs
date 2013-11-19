@@ -73,6 +73,27 @@ namespace WhereAreMyBuddies.Api.Assists
                 }
 
                 var friendModel = Parser.FriendToFriendModel(friend);
+                // remove this after the public defence in Telerik!!! - start point
+                if (friend.Nickname == "telerik")
+                {
+                    var random = new Random();
+                    int onlineRandom = random.Next(1, 10);
+                    if (onlineRandom > 3)
+                    {
+                        friend.IsOnline = true;
+                    }
+                    else
+                    {
+                        friend.IsOnline = false;
+                    }
+
+                    double sofiaCenterLatitude = 42.697766;
+                    double sofiaCenterLongitude = 23.321311;
+                    double coordinatesRandom = random.Next(-14000, 14000) / 1000000;
+                    friend.Coordinates.Latitude = sofiaCenterLatitude + coordinatesRandom;
+                    friend.Coordinates.Longitude = sofiaCenterLongitude + coordinatesRandom;
+                }
+                // remove this after the public defence in Telerik!!! - end point
                 if (friendModel.IsOnline)
                 {
                     onlineFriends.Add(friendModel);
@@ -244,15 +265,15 @@ namespace WhereAreMyBuddies.Api.Assists
                 var friendGeoCoordinate = new GeoCoordinate(friend.Latitude, friend.Longitude);
                 int meters = Convert.ToInt32(userGeoCoordinate.GetDistanceTo(friendGeoCoordinate));
                 friend.DistanceInMeters = meters;
-                
+
                 double kilometers = meters * MetersToKilometer;
                 int yards = Convert.ToInt32(meters * MetersToYards);
                 double miles = meters * MetersToMiles;
 
-                ParseDistancesToString(friend, meters, kilometers, yards, miles);              
+                ParseDistancesToString(friend, meters, kilometers, yards, miles);
             }
         }
-  
+
         private static void ParseDistancesToString(FriendModel friend, int meters, double kilometers, int yards, double miles)
         {
             if (meters < MetersInKilometer)
@@ -281,13 +302,13 @@ namespace WhereAreMyBuddies.Api.Assists
                 var sortedFriends = friends.OrderBy(f => f.Nickname);
                 return sortedFriends.ToList();
             }
-            
+
             if (orderBy.ToLower() == CoordinatesTimestamp.ToLower())
             {
                 var sortedFriends = friends.OrderByDescending(f => f.CoordinatesTimestamp);
                 return sortedFriends.ToList();
             }
-            
+
             if (orderBy.ToLower() == Distance.ToLower())
             {
                 var sortedFriends = friends.OrderBy(f => f.DistanceInMeters);

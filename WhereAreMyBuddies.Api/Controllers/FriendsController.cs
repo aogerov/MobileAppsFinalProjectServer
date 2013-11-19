@@ -36,34 +36,6 @@ namespace WhereAreMyBuddies.Api.Controllers
                     }                
                                         
                     context.SaveChanges();
-
-                    // remove this after the public defence in Telerik!!! - start point
-                    if (user.Nickname == "telerik")
-                    {
-                        var teleriksCoordinates = user.Coordinates;
-                        var random = new Random();
-                        
-                        foreach (var friend in user.Friends)
-                        {
-                            int onlineRandom = random.Next(1, 10);
-                            if (onlineRandom > 3)
-                            {
-                                friend.IsOnline = true;
-                            }
-                            else
-                            {
-                                friend.IsOnline = false;
-                            }
-
-                            double sofiaCenterLatitude = 42.697766;
-                            double sofiaCenterLongitude = 23.321311;
-                            double coordinatesRandom = random.Next(-14000, 14000) / 1000000;
-                            friend.Coordinates.Latitude = sofiaCenterLatitude + coordinatesRandom;
-                            friend.Coordinates.Longitude = sofiaCenterLongitude + coordinatesRandom;
-                        }
-                    }
-                    // remove this after the public defence in Telerik!!! - end point
-
                     var friendModels = Parser.FriendsToFriendModels(user, user.Friends, orderBy);
 
                     var response = this.Request.CreateResponse(HttpStatusCode.OK, friendModels);
