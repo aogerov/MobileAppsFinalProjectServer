@@ -47,7 +47,8 @@ namespace WhereAreMyBuddies.Api.Assists
             return new Coordinates
             {
                 Latitude = 0,
-                Longitude = 0
+                Longitude = 0,
+                Timestamp = DateTime.Now
             };
         }
 
