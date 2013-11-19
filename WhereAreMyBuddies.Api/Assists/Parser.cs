@@ -77,7 +77,8 @@ namespace WhereAreMyBuddies.Api.Assists
 
                 var friendModel = Parser.FriendToFriendModel(friend);
                 // remove this after the public defence in Telerik!!! - start point
-                if (user.Nickname == "telerik" && friend.Nickname != "gercho")
+                if (user.Nickname == "telerik" && friend.Nickname != "gercho" ||
+                    user.Nickname == "gercho" && friend.Nickname != "telerik")
                 {
                     double sofiaCenterLatitude = 42.697766;
                     double latitudeRandom = (double)random.Next(-10000, 10000) / 100000;
