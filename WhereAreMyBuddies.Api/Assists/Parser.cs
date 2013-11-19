@@ -99,6 +99,18 @@ namespace WhereAreMyBuddies.Api.Assists
                     int timeRandom = random.Next(1, 120);
                     time.AddMinutes(-timeRandom);
                     friendModel.CoordinatesTimestamp = time;
+
+                    if (friend.Nickname == "gercho")
+                    {
+                        friendModel.IsOnline = true;
+                        latitudeRandom = (double)random.Next(-2000, 2000) / 1000000;
+                        friendModel.Latitude = Math.Round(user.Coordinates.Latitude + latitudeRandom, 6);
+                        longitudeRandom = (double)random.Next(-2000, 2000) / 1000000;
+                        friendModel.Longitude = Math.Round(user.Coordinates.Longitude + longitudeRandom, 6);
+                        timeRandom = random.Next(1, 120);
+                        time.AddSeconds(-timeRandom);
+                        friendModel.CoordinatesTimestamp = time;
+                    }
                 }
                 // remove this after the public defence in Telerik!!! - end point
                 if (friendModel.IsOnline)
