@@ -80,19 +80,25 @@ namespace WhereAreMyBuddies.Api.Assists
                     int onlineRandom = random.Next(1, 10);
                     if (onlineRandom > 3)
                     {
-                        friend.IsOnline = true;
+                        friendModel.IsOnline = true;
                     }
                     else
                     {
-                        friend.IsOnline = false;
+                        friendModel.IsOnline = false;
                     }
 
                     double sofiaCenterLatitude = 42.697766;
+                    double latitudeRandom = (double)random.Next(-20000, 20000) / 1000000;
+                    friendModel.Latitude = Math.Round(sofiaCenterLatitude + latitudeRandom, 6);
+
                     double sofiaCenterLongitude = 23.321311;
-                    double coordinatesRandom = (double) random.Next(-20000, 20000) / 1000000;
-                    string coordinatesRandomAsString = String.Format("{0:F6}", coordinatesRandom);
-                    friendModel.Latitude = sofiaCenterLatitude + double.Parse(coordinatesRandomAsString);
-                    friendModel.Longitude = sofiaCenterLongitude + double.Parse(coordinatesRandomAsString);
+                    double longitudeRandom = (double)random.Next(-20000, 20000) / 1000000;
+                    friendModel.Longitude = Math.Round(sofiaCenterLongitude + longitudeRandom, 6);
+
+                    var time = user.Coordinates.Timestamp;
+                    int timeRandom = random.Next(1, 120);
+                    time.AddMinutes(-timeRandom);
+                    friendModel.CoordinatesTimestamp = time;
                 }
                 // remove this after the public defence in Telerik!!! - end point
                 if (friendModel.IsOnline)
