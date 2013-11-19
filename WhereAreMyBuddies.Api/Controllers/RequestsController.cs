@@ -44,7 +44,7 @@ namespace WhereAreMyBuddies.Api.Controllers
                 {
                     var user = Validator.ValidateSessionKey(context, sessionKey);
 
-                    var friendRequests = user.FriendRequests.Where(r => !r.IsShowed).OrderBy(r => r.FromUserNickname);
+                    var friendRequests = user.FriendRequests.Where(r => r.IsShowed).OrderBy(r => r.FromUserNickname);
                     int newFriendRequestsCount = friendRequests.Count();
 
                     var response = this.Request.CreateResponse(HttpStatusCode.OK, newFriendRequestsCount);
