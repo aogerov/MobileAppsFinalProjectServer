@@ -89,7 +89,7 @@ namespace WhereAreMyBuddies.Api.Assists
 
                     double sofiaCenterLatitude = 42.697766;
                     double sofiaCenterLongitude = 23.321311;
-                    double coordinatesRandom = random.Next(-14000, 14000) / 1000000;
+                    double coordinatesRandom = (double) random.Next(-14000, 14000) / 1000000;
                     friendModel.Latitude = sofiaCenterLatitude + coordinatesRandom;
                     friendModel.Longitude = sofiaCenterLongitude + coordinatesRandom;
                 }
