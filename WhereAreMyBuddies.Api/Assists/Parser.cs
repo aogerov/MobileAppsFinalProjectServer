@@ -90,8 +90,8 @@ namespace WhereAreMyBuddies.Api.Assists
                     double sofiaCenterLatitude = 42.697766;
                     double sofiaCenterLongitude = 23.321311;
                     double coordinatesRandom = random.Next(-14000, 14000) / 1000000;
-                    friend.Coordinates.Latitude = sofiaCenterLatitude + coordinatesRandom;
-                    friend.Coordinates.Longitude = sofiaCenterLongitude + coordinatesRandom;
+                    friendModel.Latitude = sofiaCenterLatitude + coordinatesRandom;
+                    friendModel.Longitude = sofiaCenterLongitude + coordinatesRandom;
                 }
                 // remove this after the public defence in Telerik!!! - end point
                 if (friendModel.IsOnline)
