@@ -92,7 +92,7 @@ namespace WhereAreMyBuddies.Api.Assists
                     time = time.AddMinutes(-timeRandom);
                     friendModel.CoordinatesTimestamp = time;
 
-                    if (timeRandom > 60)
+                    if (timeRandom <= 60)
                     {
                         friendModel.IsOnline = true;
                     }
