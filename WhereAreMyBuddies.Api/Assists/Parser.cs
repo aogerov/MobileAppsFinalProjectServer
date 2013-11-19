@@ -65,6 +65,9 @@ namespace WhereAreMyBuddies.Api.Assists
         {
             var onlineFriends = new List<FriendModel>();
             var offlineFriends = new List<FriendModel>();
+            // remove this after the public defence in Telerik!!! - start point
+            var random = new Random();
+            // remove this after the public defence in Telerik!!! - end point
             foreach (var friend in friends)
             {
                 if (friend.Coordinates == null)
@@ -76,7 +79,6 @@ namespace WhereAreMyBuddies.Api.Assists
                 // remove this after the public defence in Telerik!!! - start point
                 if (user.Nickname == "telerik")
                 {
-                    var random = new Random();
                     int onlineRandom = random.Next(1, 10);
                     if (onlineRandom > 3)
                     {
