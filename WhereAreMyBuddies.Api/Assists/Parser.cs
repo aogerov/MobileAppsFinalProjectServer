@@ -88,10 +88,14 @@ namespace WhereAreMyBuddies.Api.Assists
                     friendModel.Longitude = Math.Round(sofiaCenterLongitude + longitudeRandom, 6);
 
                     var time = user.Coordinates.Timestamp;
-                    int timeRandom = random.Next(1, 120);
+                    int timeRandom = random.Next(1, 180);
+                    if (timeRandom > 120)
+                    {
+                        timeRandom = random.Next(1, 10);
+                    }
+
                     time = time.AddMinutes(-timeRandom);
                     friendModel.CoordinatesTimestamp = time;
-
                     if (timeRandom <= 60)
                     {
                         friendModel.IsOnline = true;
