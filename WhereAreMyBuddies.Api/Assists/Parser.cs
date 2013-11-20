@@ -56,8 +56,8 @@ namespace WhereAreMyBuddies.Api.Assists
         {
             return new Coordinates
             {
-                Latitude = coordinatesModel.Latitude,
-                Longitude = coordinatesModel.Longitude
+                Latitude = Math.Round(coordinatesModel.Latitude, 6),
+                Longitude = Math.Round(coordinatesModel.Longitude, 6)
             };
         }
 
