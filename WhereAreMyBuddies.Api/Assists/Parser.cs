@@ -88,7 +88,8 @@ namespace WhereAreMyBuddies.Api.Assists
                     double longitudeRandom = (double)random.Next(-10000, 10000) / 100000;
                     friendModel.Longitude = Math.Round(sofiaCenterLongitude + longitudeRandom, 6);
 
-                    var time = user.Coordinates.Timestamp;
+                    //var time = user.Coordinates.Timestamp;
+                    var time = DateTime.Now;
                     int timeRandom = random.Next(1, 180);
                     if (timeRandom > 120)
                     {
